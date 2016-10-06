@@ -7,8 +7,7 @@ class Segment:
         self.__hash_ = random.uniform(0, 100000)
 
     def __str__(self):
-        return "Points ({0}): {1}"\
-            .format(len(self.points), self.points)
+        return str(int(self.__hash_))
 
     def __repr__(self):
         return self.__str__()
@@ -31,6 +30,10 @@ class Segment:
     @property
     def size(self):
         return len(self.points)
+
+    def print_points(self):
+        return "Points ({0}): {1}" \
+            .format(len(self.points), self.points)
 
     def add_point(self, point: tuple):
         """

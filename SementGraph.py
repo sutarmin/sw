@@ -3,8 +3,18 @@ from Segment import Segment
 
 
 class SegmentGraph(Graph):
+
     def __init__(self):
         super().__init__()
+
+    def __str__(self):
+        res = "vertices: "
+        for k in self._graph_dict:
+            res += "\n\t" + str(k) + ': ' + k.print_points()
+        res += "\nedges: "
+        for edge in self._Graph__generate_edges():
+            res += "\n\t" + str(edge)
+        return res
 
     def unite_vertices(self, first: Segment, second: Segment):
         """

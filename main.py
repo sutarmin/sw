@@ -76,6 +76,3 @@ graph.add_edge((seg2, seg3))
 
 graph.unite_vertices(seg1, seg2)
 print(graph)
-"""
-    Так. Граф реализован, надо только проверить unite_vertices и можно реализовывать алгоритм :)
-"""
