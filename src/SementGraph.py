@@ -1,20 +1,32 @@
 from Graph import Graph
 from Segment import Segment
 
-
 class SegmentGraph(Graph):
-
     def __init__(self):
         super().__init__()
 
     def __str__(self):
-        res = "vertices: "
+        res = "vertices(" + str(len(self._graph_dict)) + "): "
         for k in self._graph_dict:
             res += "\n\t" + str(k) + ': ' + k.print_points()
-        res += "\nedges: "
-        for edge in self._Graph__generate_edges():
-            res += "\n\t" + str(edge)
+
+        edges = self._Graph__generate_edges()
+        if len(edges) > 0:
+            res += "\nedges(" + str(len(edges)) + "): "
+            for edge in self._Graph__generate_edges():
+                res += "\n\t" + str(edge)
+        else:
+            res += "\nno edges"
         return res
+
+    def summary(self):
+        """
+        return: tuple with two numbers:
+            vertex amount
+            edges amount
+        """
+        edges = self._Graph__generate_edges()
+        return len(self._graph_dict), len(edges)
 
     def unite_vertices(self, first: Segment, second: Segment):
         """
@@ -47,3 +59,9 @@ class SegmentGraph(Graph):
         # done! we don't need 'second' anymore
         self._graph_dict.pop(second)
         del second
+
+    def find_segment_by_point(self, point):
+        for vertex in self._graph_dict:
+            if point in vertex.points:
+                return vertex
+        return None

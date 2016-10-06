@@ -3,7 +3,7 @@ import random
 
 class Segment:
     def __init__(self):
-        self.points = set()  # set of Point
+        self.points = set()  # set of tuples (x, y)
         self.__hash_ = random.uniform(0, 100000)
 
     def __str__(self):

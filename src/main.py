@@ -51,28 +51,25 @@ def effort1():
     cv2.destroyAllWindows()
 
 
-def segmentation(img):
+def segmentation(img: np.ndarray):
     res = prepare_img(img)
-    for i in range(100):
-        for j in range(100):
-            for c in range(3):
-                res.itemset((i, j, c), 0)
-    cv2.imshow('Segmentation result', res)
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    height = res.shape[0]
+    width = res.shape[1]
+    table = []
+    graph = SegmentGraph()
+    for i in range(height):
+        table.append([])
+        for j in range(width):
+            s = Segment()
+            s.add_point((i, j))
+            table[i].append(s)
+            graph.add_vertex(s)
+    for i in range(height - 1):
+        for j in range(width - 1):
+            graph.add_edge((table[i][j], table[i + 1][j]))
+            graph.add_edge((table[i][j], table[i][j + 1]))
 
 
-seg1 = Segment()
-seg1.add_point((0, 0))
-seg2 = Segment()
-seg2.add_point((0, 1))
-seg2.add_point((1, 0))
-seg3 = Segment()
-seg3.add_point((1, 1))
-graph = SegmentGraph()
-graph.add_edge((seg1, seg2))
-graph.add_edge((seg2, seg3))
-# print(graph)
-
-graph.unite_vertices(seg1, seg2)
-print(graph)
+if __name__ == '__main__':
+    right = cv2.imread('..\\..\\..\\image_lib\\0_right.jpg')
+    segmentation(right)
