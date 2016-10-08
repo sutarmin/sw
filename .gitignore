@@ -3,3 +3,4 @@ src\__pycache__\
 tips\
 *.*
 !*.py
+src\local.py
