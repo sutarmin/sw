@@ -22,7 +22,7 @@
 ## Описание
 Скоро тут будут картикни с примерами.
 
-Краткое введение в проблему можно прочитать здесь: [Отчёт по НИР 1 курс.pdf](https://docs.google.com/document/d/1wdXx7PURS0_Wivgkw37-CZEjcaPfzlphHu7rmdS361Q/edit?usp=sharing)
+Краткое введение в проблему можно прочитать здесь (Google Docs): [Отчёт по НИР 1 курс](https://docs.google.com/document/d/1wdXx7PURS0_Wivgkw37-CZEjcaPfzlphHu7rmdS361Q/edit?usp=sharing)
 
 ## Реализация
 Текущая реализация использует python 3.5.2 и OpenCV 3.1
