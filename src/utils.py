@@ -74,5 +74,5 @@ def show_hist_ex(img: np.ndarray):
         # plt.subplot(111)
         plt.plot(histr, color=col)
         plt.xlim([0, 256])
-    plt.show()
 
+    plt.show()

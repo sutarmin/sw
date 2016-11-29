@@ -7,7 +7,7 @@ from utils import normalize_hist, show_hist_ex, quantize
 from ImageRepository import ImageRepository as Repo
 
 
-def prepare(img):
+def effort1(img):
     """
     Первая попытка подготовки изображений
     1. Квантование
@@ -22,19 +22,18 @@ def prepare(img):
     img = quantize(img, 5)
     img = normalize_hist(img)
 
-    cv2.namedWindow("tool " + str(prepare.winname), cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("tool " + str(prepare.winname), 1800, 1000)
+    cv2.namedWindow("tool " + str(effort1.winname), cv2.WINDOW_NORMAL)
+    cv2.resizeWindow("tool " + str(effort1.winname), 1800, 1000)
 
-
-    cv2.imshow("tool " + str(prepare.winname), img)
+    cv2.imshow("tool " + str(effort1.winname), img)
 
     img2 = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     cv2.waitKey(0)
-    cv2.imshow("tool " + str(prepare.winname), img2)
+    cv2.imshow("tool " + str(effort1.winname), img2)
 
     th3 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
     cv2.waitKey(0)
-    cv2.imshow("tool " + str(prepare.winname), th3)
+    cv2.imshow("tool " + str(effort1.winname), th3)
 
     img3 = morphology.remove_small_objects(th3.astype(bool))
     img4 = morphology.remove_small_holes(img3)
@@ -42,19 +41,10 @@ def prepare(img):
     #  cv2.namedWindow("tool2 " + str(prepare.winname), cv2.WINDOW_NORMAL)
     #  cv2.resizeWindow("tool2 " + str(prepare.winname), 1800, 1000)
     #  cv2.imshow("tool2 " + str(prepare.winname), th3 - skimage.img_as_ubyte(img4))
-    cv2.imshow("tool " + str(prepare.winname), skimage.img_as_ubyte(img4))
+    cv2.imshow("tool " + str(effort1.winname), skimage.img_as_ubyte(img4))
 
     cv2.waitKey(0)
-    prepare.winname += 1
+    effort1.winname += 1
 
 
-prepare.winname = 0
-
-if __name__ == '__main__':
-    first, second = Repo.get_set(0)
-    print(cv2.mixChannels())
-    # prepare(first)
-    # prepare(second)
-
-    cv2.destroyAllWindows()
-    # show_hist_ex(img3)
+effort1.winname = 0
