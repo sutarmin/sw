@@ -3,48 +3,49 @@ import cv2
 from matplotlib import pyplot as plt
 import skimage
 from skimage import exposure, morphology, color
-from handlers import normalize_hist, show_hist_ex, quantize
-from ImageRepository import ImageRepository as Repo
+
+from handlers import normalize_hist, quantize
+
+"""
+    Здесь массивы функций - способы обработки изображений
+    каждая функция на верхнем уровне должна удовлетворять 2 требованиям:
+     1. Принимать изображение и возвращать изображение, которое ожидает принять следующая функция;
+     2. Возвращать изображение, которе может быть отображено с помощью utils -> view
+
+    Для вложенных массивов условие 2 необязательно, но условие 1 необходимо выполнять
+"""
+
+"""
+Попытка 1
+1. Квантование
+2. Расширение гистограммы (маловажно)
+3. Перевод в градации серого
+4. Адаптивная бинаризация
+5. Удаление мелких объектов и дыр
+
+Вывод: при семешении 3 каналов в градации серого теряется очень много информации
+Нужно работать с каждым цветовым каналом отдельно
+"""
+effort1 = [
+    lambda img: quantize(img, 5),
+    lambda img: normalize_hist(img),
+    lambda img: cv2.cvtColor(img, cv2.COLOR_RGB2GRAY),
+    lambda img: cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2),
+    [
+        lambda img: morphology.remove_small_objects(img.astype(bool)),
+        lambda img: morphology.remove_small_holes(img),
+        lambda img: skimage.img_as_ubyte(img)
+    ]
+]
 
 
-def effort1(img):
-    """
-    Первая попытка подготовки изображений
-    1. Квантование
-    2. Расширение гистограммы (маловажно)
-    3. Перевод в градации серого
-    4. Адаптивная бинаризация
-    5. Удаление мелких объектов и дыр
-
-    Вывод: при семешении 3 каналов в градации серого теряется очень много информации
-    Нужно работать с каждым цветовым каналом отдельно
-    """
-    img = quantize(img, 5)
-    img = normalize_hist(img)
-
-    cv2.namedWindow("tool " + str(effort1.winname), cv2.WINDOW_NORMAL)
-    cv2.resizeWindow("tool " + str(effort1.winname), 1800, 1000)
-
-    cv2.imshow("tool " + str(effort1.winname), img)
-
-    img2 = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
-    cv2.waitKey(0)
-    cv2.imshow("tool " + str(effort1.winname), img2)
-
-    th3 = cv2.adaptiveThreshold(img2, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-    cv2.waitKey(0)
-    cv2.imshow("tool " + str(effort1.winname), th3)
-
-    img3 = morphology.remove_small_objects(th3.astype(bool))
-    img4 = morphology.remove_small_holes(img3)
-    cv2.waitKey(0)
-    #  cv2.namedWindow("tool2 " + str(prepare.winname), cv2.WINDOW_NORMAL)
-    #  cv2.resizeWindow("tool2 " + str(prepare.winname), 1800, 1000)
-    #  cv2.imshow("tool2 " + str(prepare.winname), th3 - skimage.img_as_ubyte(img4))
-    cv2.imshow("tool " + str(effort1.winname), skimage.img_as_ubyte(img4))
-
-    cv2.waitKey(0)
-    effort1.winname += 1
-
-
-effort1.winname = 0
+"""
+Попытка 2
+1. Квантование
+2. Расширение гистограммы (маловажно)
+3. Разделение по цветовым каналам
+4. Адаптивная бинаризация (для каждого канала)
+5. Удаление мелких объектов и дыр (для каждого канала)
+"""
+effort2 = [
+]
