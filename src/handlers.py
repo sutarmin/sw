@@ -3,6 +3,10 @@ import numpy as np
 from matplotlib import pyplot as plt
 from skimage import exposure
 
+"""
+    Здесь функции-обработчики, которые принимают изображение и возвращают изображение
+"""
+
 
 # эквализация гисторграммы (повышение контрастности) цветного изображения с помощью CLAHE
 def get_clahe_from_rgb_image(src: np.ndarray):

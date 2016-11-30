@@ -3,7 +3,7 @@ import cv2
 from matplotlib import pyplot as plt
 import skimage
 from skimage import exposure, morphology, color
-from utils import normalize_hist, show_hist_ex, quantize
+from handlers import normalize_hist, show_hist_ex, quantize
 from ImageRepository import ImageRepository as Repo
 
 
