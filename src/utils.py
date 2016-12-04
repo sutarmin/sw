@@ -19,7 +19,6 @@ def process_yield(img, func_arr):
         yield img
 
 
-
 def process(img, func_arr):
     result = None
     for result in process_yield(img, func_arr):

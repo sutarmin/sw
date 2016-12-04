@@ -90,3 +90,14 @@ def remove_small_areas(img: np.ndarray):
     img = skimage.img_as_ubyte(img)
 
     return img
+
+
+def remove_color_channels(img: np.ndarray, channels: str):
+    res = img.copy()
+    if 'r' in channels:
+        res[:, :, 2] = 0
+    if 'g' in channels:
+        res[:, :, 1] = 0
+    if 'b' in channels:
+        res[:, :, 0] = 0
+    return res
