@@ -9,11 +9,19 @@ def view(img):
     cv2.destroyWindow("view")
 
 
-def process(img, func_arr):
+def process_yield(img, func_arr):
     for obj in func_arr:
         if callable(obj):
             img = obj(img)
         else:
-            for child in process(img, obj):
+            for child in process_yield(img, obj):
                 img = child
         yield img
+
+
+
+def process(img, func_arr):
+    result = None
+    for result in process_yield(img, func_arr):
+        pass
+    return result

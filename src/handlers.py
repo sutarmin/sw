@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 from matplotlib import pyplot as plt
-from skimage import exposure
+import skimage
+from skimage import exposure, morphology
 
 """
     Здесь функции-обработчики, которые принимают изображение и возвращают изображение
@@ -80,3 +81,12 @@ def show_hist_ex(img: np.ndarray):
         plt.xlim([0, 256])
 
     plt.show()
+
+
+# удаление связных областей небольшого размера
+def remove_small_areas(img: np.ndarray):
+    img = morphology.remove_small_objects(img.astype(bool)),
+    img = morphology.remove_small_holes(img),
+    img = skimage.img_as_ubyte(img)
+
+    return img
