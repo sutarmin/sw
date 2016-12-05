@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 import skimage
 from skimage import exposure, morphology, color
 
-from handlers import normalize_hist, quantize
+from handlers import normalize_hist, quantize, remove_small_areas, get_channel
 
 """
     Здесь массивы функций - способы обработки изображений
@@ -47,6 +47,13 @@ effort1 = [
 4. Адаптивная бинаризация (для каждого канала)
 5. Удаление мелких объектов и дыр (для каждого канала)
 """
-effort2 = [
-    lambda img: quantize(img, 5),
-]
+
+
+def effort2(channel: str):
+    return [
+        lambda img: quantize(img, 5),
+        lambda img: normalize_hist(img),
+        lambda img: get_channel(img, channel),
+        lambda img: cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2),
+        lambda img: remove_small_areas(img)
+    ]

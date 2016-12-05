@@ -4,6 +4,7 @@ from matplotlib import pyplot as plt
 import skimage
 from skimage import exposure, morphology
 
+
 """
     Здесь функции-обработчики, которые принимают изображение и возвращают изображение
 """
@@ -71,33 +72,22 @@ def normalize_hist(img: np.ndarray):
     return res
 
 
-# показывает картинку с гистограммой полученного изображения
-def show_hist_ex(img: np.ndarray):
-    color = ('b', 'g', 'r')
-    for i, col in enumerate(color):
-        histr = cv2.calcHist([img], [i], None, [256], [0, 256])
-        # plt.subplot(111)
-        plt.plot(histr, color=col)
-        plt.xlim([0, 256])
-
-    plt.show()
-
-
 # удаление связных областей небольшого размера
 def remove_small_areas(img: np.ndarray):
-    img = morphology.remove_small_objects(img.astype(bool)),
-    img = morphology.remove_small_holes(img),
+    img = morphology.remove_small_objects(img.astype(bool))
+    img = morphology.remove_small_holes(img)
     img = skimage.img_as_ubyte(img)
 
     return img
 
 
-def remove_color_channels(img: np.ndarray, channels: str):
-    res = img.copy()
-    if 'r' in channels:
-        res[:, :, 2] = 0
-    if 'g' in channels:
-        res[:, :, 1] = 0
-    if 'b' in channels:
-        res[:, :, 0] = 0
-    return res
+def get_channel(img: np.ndarray, channel: str):
+    assert (len(channel) == 1)
+    assert (channel in 'brg')
+    b, g, r = cv2.split(img)
+    if channel == 'b':
+        return b
+    if channel == 'g':
+        return g
+    if channel == 'r':
+        return r

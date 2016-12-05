@@ -1,4 +1,6 @@
 import cv2
+import numpy as np
+from matplotlib import pyplot as plt
 
 
 def view(img):
@@ -24,3 +26,15 @@ def process(img, func_arr):
     for result in process_yield(img, func_arr):
         pass
     return result
+
+
+# показывает картинку с гистограммой полученного изображения
+def show_hist_ex(img: np.ndarray):
+    color = ('b', 'g', 'r')
+    for i, col in enumerate(color):
+        histr = cv2.calcHist([img], [i], None, [256], [0, 256])
+        # plt.subplot(111)
+        plt.plot(histr, color=col)
+        plt.xlim([0, 256])
+
+    plt.show()
