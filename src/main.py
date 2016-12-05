@@ -23,12 +23,11 @@ if __name__ == '__main__':
     # first = cv2.cvtColor(first, cv2.COLOR_RGB2BGR)
     # second = cv2.cvtColor(second, cv2.COLOR_RGB2BGR)
 
-    ib.draw(first, 2, 3, 1)
-    ib.draw(first, 2, 3, 2)
-    ib.draw(first, 2, 3, 3)
-    ib.draw(first, 2, 3, 4)
-    ib.draw(first, 2, 3, 5)
-    ib.draw(first, 2, 3, 6)
+    func_arr = effort2('r')
+    for i, f in enumerate(process_yield(first, func_arr)):
+        ib.draw(f, (2, len(func_arr)), (1, i + 1))
+    for i, f in enumerate(process_yield(second, func_arr)):
+        ib.draw(f, (2, len(func_arr)), (2, i + 1))
     ib.show()
 
     # img = process(first, effort2('b'))

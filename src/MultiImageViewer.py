@@ -19,21 +19,46 @@ class ImageBuilder:
 
         self.canvas = np.zeros((self.height, self.width, 3), np.uint8)
 
-    def draw(self, img: np.ndarray, x_parts, y_parts, position):
-        if x_parts < 1 or y_parts < 1 or position < 1:
-            raise ValueError("x_parts, y_parts and position should be positive")
-        if position > x_parts * y_parts:
-            raise ValueError("position should not be more then x_parts*y_parts. Given {0}>{1}*{2}"
-                             .format(position, x_parts, y_parts))
+    def draws(self, img: np.ndarray, short_pos: int):
+        if short_pos < 111 or short_pos > 999:
+            raise ValueError("short_pos should be between 111 and 999")
+        x_parts = short_pos // 100
+        y_parts = short_pos % 100 // 10
+        position = short_pos % 10
+        self.drawo(img, x_parts, y_parts, position)
 
-        _x_pos = (position - 1) % x_parts
-        _y_pos = (position - 1) // x_parts
-        _width = self.width // x_parts
-        _height = self.height // y_parts
+    def drawo(self, img: np.ndarray, x_parts: int, y_parts: int, order: int):
+        if x_parts < 1 or y_parts < 1 or order < 1:
+            raise ValueError("x_parts, y_parts and position should be positive")
+        if order > x_parts * y_parts:
+            raise ValueError("position should not be more then x_parts*y_parts. Given {0}>{1}*{2}"
+                             .format(order, x_parts, y_parts))
+
+        _x_pos = (order - 1) % x_parts
+        _y_pos = (order - 1) // x_parts
+        self.draw(img, (x_parts, y_parts), (_x_pos, _y_pos))
+
+    def draw(self, img: np.ndarray, parts: tuple, position: tuple):
+        if len(parts) != 2 or len(position) != 2:
+            raise ValueError("lengths error")
+        if parts[0] < position[0] or parts[1] < position[1]:
+            raise ValueError("values error")
+
+        _x_pos = position[0] - 1
+        _y_pos = position[1] - 1
+        _width = self.width // parts[0]
+        _height = self.height // parts[1]
 
         _img = cv2.resize(img, (_width, _height), interpolation=cv2.INTER_CUBIC)
 
+        # приводим к единому формату, если получили не-rgb изображение
+        if len(_img.shape) != 3:
+            _img = cv2.merge((_img, _img, _img))
+
         self.canvas[_y_pos * _height:(_y_pos + 1) * _height, _x_pos * _width:(_x_pos + 1) * _width] = _img
+
+    def drawnext(self, img):
+        pass
 
     def show(self, winname=""):
         _name = self.winname if winname == "" else winname

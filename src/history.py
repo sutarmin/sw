@@ -54,6 +54,6 @@ def effort2(channel: str):
         lambda img: quantize(img, 5),
         lambda img: normalize_hist(img),
         lambda img: get_channel(img, channel),
-        lambda img: cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2),
-        lambda img: remove_small_areas(img)
+        # lambda img: cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2),
+        # lambda img: remove_small_areas(img)
     ]
