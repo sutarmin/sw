@@ -22,7 +22,7 @@ def effort_cur(img):
     img = normalize_hist(img)
 
 
-if __name__ == '__main__':
+def temp_not_main():
     first, second = Repo.get_set(0)
     first = cv2.cvtColor(first, cv2.COLOR_RGB2BGR)
     # second = cv2.cvtColor(second, cv2.COLOR_RGB2BGR)
@@ -42,3 +42,15 @@ if __name__ == '__main__':
     mark1 = mark_boundaries(first, quickshift_segments1)
 
     cv2.destroyAllWindows()
+
+
+def temp_main():
+    first, second = Repo.get_set(0)
+    print("Start")
+    quickshift_seg = quickshift(second, kernel_size=3, max_dist=6, ratio=0.5)
+    print("Done")
+    Repo.dump(quickshift_seg, 'quickshift/0_right')
+
+
+if __name__ == '__main__':
+    temp_main()
