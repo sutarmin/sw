@@ -39,6 +39,12 @@ class ImageBuilder:
         self.draw(img, (x_parts, y_parts), (_x_pos, _y_pos))
 
     def draw(self, img: np.ndarray, parts: tuple, position: tuple):
+        """
+        Добавляет полученное изображение на холст
+        :param img: изображение
+        :param parts: 2 числа - высота и цширина холста, измеряемые количеством изображений
+        :param position: позиция текущего изображения на холсте.
+        """
         if len(parts) != 2 or len(position) != 2:
             raise ValueError("lengths error")
         if parts[0] < position[0] or parts[1] < position[1]:

@@ -48,3 +48,10 @@ class ImageRepository:
                 res.itemset((x, y), val)
 
         return res
+
+    @staticmethod
+    def get_set_from_dumpq(num: int):
+        folder = 'quickshift/'
+        left = ImageRepository.from_dump(folder + str(num) + '_left')
+        right = ImageRepository.from_dump(folder + str(num) + '_right')
+        return left, right
