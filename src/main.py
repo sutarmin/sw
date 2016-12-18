@@ -1,28 +1,18 @@
 import numpy as np
-from skimage.segmentation import quickshift
+import cv2
+from skimage.segmentation import quickshift, felzenszwalb, mark_boundaries
 
 from ImageRepository import ImageRepository as Repo
 from MultiImageViewer import ImageBuilder
+from Image import Image
 
 from handlers import quantize, normalize_hist, get_channel
-
-
-def generate_areas(seg_map: np.ndarray):
-    # возвращать по одному объектику, если это возможно
-    yield seg_map
-
-
-def generate_dumps():
-    for i in range(3):
-        print('Set ' + str(i))
-        left, right = Repo.get_set(i)
-        seg = quickshift(left, kernel_size=3, max_dist=6, ratio=0.5)
-        Repo.dump(seg, 'quickshift/' + str(i) + '_left')
-        seg = quickshift(right, kernel_size=3, max_dist=6, ratio=0.5)
-        Repo.dump(seg, 'quickshift/' + str(i) + '_right')
+from utils import view
+from Area import Area
 
 
 if __name__ == '__main__':
-    left, right = Repo.get_set_from_dumpq(0)
-
-    print(left)
+    # src = cv2.imread('../img/synthetic/arrows.png')
+    src = cv2.imread('../img/0_left.jpg')
+    # view(src[0:1, 0:1])
+    img = Image(src)
