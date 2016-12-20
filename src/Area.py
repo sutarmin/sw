@@ -1,4 +1,5 @@
 import numpy as np
+import cv2
 from math import floor
 
 
@@ -9,6 +10,8 @@ class Area:
         self.mark = mark
         self.p_grid_size = 10
         self.p_grid = np.full((self.p_grid_size, self.p_grid_size), True, dtype=bool)
+        self.contour = np.array((1, 1))
+        self.region = np.array((1, 1))
 
     def add_point(self, point):
         if self.min[0] > point[0] or self.min[0] == -1:
@@ -34,3 +37,25 @@ class Area:
                 # print('[{0}:{1}][{2}:{3}]'.format(from_h, to_h, from_w, to_w))
                 if not np.any(segmap[from_h:to_h + 1, from_w:to_w + 1] == self.mark):
                     self.p_grid.itemset((i, j), False)
+
+    def calc_contour(self, segmap: np.ndarray):
+        region = np.array(segmap[self.min[0]:self.max[0] + 1, self.min[1]:self.max[1] + 1], dtype=np.int32)
+        if self.mark == 0:
+            return
+
+        region[region != self.mark] = 0
+        self.region = np.array(region)
+        _, contour, _ = cv2.findContours(region, 2, 1)
+        self.contour = contour[0]
+
+
+def write_area_to_file(arr: np.ndarray, _min=None, _max=None, filename='temp.txt'):
+    if _min is None:
+        _min = (0, 0)
+    if _max is None:
+        _max = arr.shape
+    with open(filename, 'w') as f:
+        for i in range(_min[0], _max[0]):
+            for j in range(_min[1], _max[1]):
+                f.write("{: >2}".format(arr.item((i, j))))
+            f.write('\n')

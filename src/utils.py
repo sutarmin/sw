@@ -65,9 +65,20 @@ def generate_areas(seg_map: np.ndarray):
     return areas
 
 
-def write_area_to_file(arr: np.ndarray, _min, _max, filename='temp.txt'):
+def write_area_to_file(arr: np.ndarray, _min=None, _max=None, filename='temp.txt'):
+    if _min is None:
+        _min = (0, 0)
+    if _max is None:
+        _max = arr.shape
     with open(filename, 'w') as f:
-        for i in range(_min[0], _max[0] + 1):
-            for j in range(_min[1], _max[1] + 1):
-                f.write("{: >4}".format(arr.item((i, j))))
+        for i in range(_min[0], _max[0]):
+            for j in range(_min[1], _max[1]):
+                f.write("{: >3}".format(arr.item((i, j))))
             f.write('\n')
+
+
+def draw_contour_on_region(region: np.ndarray, contour, value):
+    for point in contour:
+        x = point[0][0]
+        y = point[0][1]
+        region.itemset((y, x), value)
