@@ -27,7 +27,6 @@ def viewc(img, resize=False):
     cv2.imshow(winname, img)
     viewc.count += 1
 
-
 viewc.count = 1
 
 
@@ -78,6 +77,11 @@ def generate_areas(seg_map: np.ndarray):
             if mark not in areas.keys():
                 areas[mark] = Area(mark)
             areas[mark].add_point([i, j])
+
+    arr = list(areas.keys())
+    for idx in arr:
+        if areas[idx].square < 20:
+            areas.pop(idx)
     return areas
 
 

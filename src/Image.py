@@ -10,11 +10,10 @@ from utils import generate_areas, view, write_area_to_file, draw_contour_on_regi
 class Image:
     def __init__(self, src: np.ndarray, sigma=0):
         self.src = src
-        self.segmap = felzenszwalb(self.src, scale=300, sigma=sigma, min_size=100)
+        self.segmap = felzenszwalb(self.src, scale=300, sigma=sigma, min_size=120)
         self.areas = generate_areas(self.segmap)
         if len(np.unique(self.segmap)) != len(self.areas):
             print("Image init fault")
         i = 0
         for area in self.areas.values():
-            area.calc_contour(self.segmap)
-
+            area.calc_contour(self.segmap, self.src)

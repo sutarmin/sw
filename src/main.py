@@ -7,11 +7,12 @@ from MultiImageViewer import ImageBuilder
 from Comparer import Comparer
 from utils import viewc
 
-if __name__ == '__main__':
+
+def main():
     src1 = cv2.imread('../img/synthetic/arrows_1.png')
     src2 = cv2.imread('../img/synthetic/arrows_2.png')
     src1, src2 = Repo.get_set(0)
-    comparer = Comparer(0.02, 1.5)
+    comparer = Comparer(0.02, 1.2)
     comparer.add(src1)
     comparer.add(src2)
     print(comparer.compare_dict)
@@ -20,3 +21,7 @@ if __name__ == '__main__':
     viewc(res2)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    main()

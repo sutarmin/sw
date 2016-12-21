@@ -49,19 +49,25 @@ class Comparer:
 
     def draw_diff(self, idx1: int, idx2: int):
         if idx1 not in self.compare_dict.keys():
-            raise ValueError('index1 is out of bounds. Seems link nothiing to draw')
+            raise ValueError('index1 is out of bounds. Seems look nothiing to draw')
         if idx2 not in self.compare_dict[idx1].keys():
-            raise ValueError('index2 is out of bounds. Seems link nothiing to draw')
+            raise ValueError('index2 is out of bounds. Seems look nothiing to draw')
         img1 = self.src_list[idx1]
         img2 = self.src_list[idx2]
         copy1 = np.array(img1.src)
         copy2 = np.array(img2.src)
+        i = 0
         for contours in self.compare_dict[idx1][idx2]:
+            print(cv2.contourArea(img1.areas[contours[0]].contour), img1.areas[contours[0]].contour)
+            print(cv2.contourArea(img2.areas[contours[1]].contour), img2.areas[contours[1]].contour)
             color = (randint(0, 255), randint(0, 255), randint(0, 255))
             cv2.drawContours(copy1, [img1.areas[contours[0]].contour], 0, color, thickness=2,
                              offset=tuple(img1.areas[contours[0]].min[::-1]))
             cv2.drawContours(copy2, [img2.areas[contours[1]].contour], 0, color, thickness=2,
                              offset=tuple(img2.areas[contours[1]].min[::-1]))
+            i += 1
+            if (i > 10):
+                break
         cv2.putText(copy1, str(len(self.compare_dict[idx1][idx2])), (0, 25), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255),
                     thickness=2)
         return copy1, copy2
