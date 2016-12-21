@@ -46,7 +46,8 @@ class Area:
         region[region != self.mark] = 0
         self.region = np.array(region)
         _, contour, _ = cv2.findContours(region, 2, 1)
-        self.contour = contour[0]
+        if len(contour) > 1:
+            self.contour = contour[0]
 
 
 def write_area_to_file(arr: np.ndarray, _min=None, _max=None, filename='temp.txt'):

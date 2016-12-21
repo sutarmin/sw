@@ -15,6 +15,22 @@ def view(img, resize=False):
     cv2.destroyWindow("view")
 
 
+# view without destroyWindow
+def viewc(img, resize=False):
+    winname = "view " + str(viewc.count)
+    cv2.namedWindow(winname, cv2.WINDOW_NORMAL)
+    minsize = 180
+    if img.shape[0] < minsize or img.shape[1] < minsize:
+        cv2.resizeWindow(winname, minsize, minsize)
+    if resize:
+        cv2.resizeWindow(winname, 1800, 1000)
+    cv2.imshow(winname, img)
+    viewc.count += 1
+
+
+viewc.count = 1
+
+
 def process_yield(img, func_arr):
     for obj in func_arr:
         if callable(obj):
@@ -77,8 +93,13 @@ def write_area_to_file(arr: np.ndarray, _min=None, _max=None, filename='temp.txt
             f.write('\n')
 
 
-def draw_contour_on_region(region: np.ndarray, contour, value):
+def draw_contour_on_region(region: np.ndarray, contour, value, shift=(0, 0)):
     for point in contour:
-        x = point[0][0]
-        y = point[0][1]
-        region.itemset((y, x), value)
+        x = point[0][0] + shift[1]
+        y = point[0][1] + shift[0]
+        if len(region.shape) == 3:
+            region.itemset((y, x, 0), value[0])
+            region.itemset((y, x, 1), value[1])
+            region.itemset((y, x, 2), value[2])
+        else:
+            region.itemset((y, x), value)
