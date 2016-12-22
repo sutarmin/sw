@@ -51,6 +51,21 @@ class Area:
         if len(contours) > 1:
             region[region == self.mark] = 255
             max_ind = max(enumerate([len(cont) for cont in contours]), key=lambda x: x[1])
+            self.contour = contours[max_ind[0]]
+        else:
+            print("no contour")
+
+    def calc_contour_d(self, segmap: np.ndarray, src: np.ndarray):
+        region = np.array(segmap[self.min[0]:self.max[0] + 1, self.min[1]:self.max[1] + 1], dtype=np.int32)
+        if self.mark == 0:
+            return
+
+        region[region != self.mark] = 0
+        self.region = np.array(region)
+        _, contours, _ = cv2.findContours(region, 2, 1)
+        if len(contours) > 1:
+            region[region == self.mark] = 255
+            max_ind = max(enumerate([len(cont) for cont in contours]), key=lambda x: x[1])
             imcopy = np.array(src[self.min[0]:self.max[0] + 1, self.min[1]:self.max[1] + 1])
             region = region.astype(np.uint8)
             for i in range(len(contours)):
